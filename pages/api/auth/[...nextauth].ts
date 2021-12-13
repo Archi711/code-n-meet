@@ -3,7 +3,7 @@ import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
 export default NextAuth({
-  secret: 'hn7OU6redOk3uKNDVyjO/CQzJbgaYBCaQD9XVoKYP9o=',
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID as string,
