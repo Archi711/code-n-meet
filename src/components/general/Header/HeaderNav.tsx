@@ -1,17 +1,33 @@
 import { ChevronDownIcon } from '@chakra-ui/icons'
-import { Button, Flex, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react'
+import {
+  Button,
+  Flex,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+} from '@chakra-ui/react'
 import { useAppSelector } from '../../../app/hooks'
 import AppLink from '../../custom/AppLink'
-
 
 const UserNav = () => (
   <>
     <Menu>
-      <MenuButton rightIcon={<ChevronDownIcon />} as={Button}>Konto</MenuButton>
+      <MenuButton rightIcon={<ChevronDownIcon />} as={Button}>
+        Konto
+      </MenuButton>
       <MenuList>
-        <MenuItem><AppLink to='/profile/self'>Profil</AppLink></MenuItem>
-        <MenuItem><AppLink to='/profile/self/settings'>Ustawienia</AppLink></MenuItem>
-        <MenuItem><AppLink to='/logout'>Wyloguj</AppLink></MenuItem>
+        <AppLink to='/profile/self'>
+          <MenuItem>Profile</MenuItem>
+        </AppLink>
+
+        <AppLink to='/profile/self/settings'>
+          <MenuItem>Settings</MenuItem>
+        </AppLink>
+
+        <AppLink to='/logout'>
+          <MenuItem>Log out</MenuItem>
+        </AppLink>
       </MenuList>
     </Menu>
   </>
@@ -19,18 +35,19 @@ const UserNav = () => (
 
 const GuestNav = () => (
   <>
-    <Button><AppLink to='/login'>Zaloguj</AppLink></Button>
-    <Button><AppLink to='/signup'>Utwórz konto</AppLink></Button>
+    <AppLink to='/login'>
+      <Button>Log in</Button>
+    </AppLink>
+
+    <AppLink to='/signup'>
+      <Button>Sign up</Button>
+    </AppLink>
   </>
 )
 
-type HeaderNavProps = {
-
-}
+type HeaderNavProps = {}
 export default function HeaderNav(props: HeaderNavProps) {
-  const user = useAppSelector(state => state.auth.user)
+  const user = useAppSelector((state) => state.auth.user)
 
-  return <Flex gap='1em'>
-    {user ? <UserNav /> : <GuestNav />}
-  </Flex>
+  return <Flex gap='1em'>{user ? <UserNav /> : <GuestNav />}</Flex>
 }
