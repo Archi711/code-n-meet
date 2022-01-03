@@ -45,6 +45,7 @@ export default function SignUp() {
             p: '1em',
             borderRadius: '12px',
           }}
+          w='container.sm'
           as={Form}
           noValidate
         >
