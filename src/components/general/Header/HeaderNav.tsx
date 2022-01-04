@@ -10,28 +10,30 @@ import {
 import { useAppSelector } from '../../../app/hooks'
 import AppLink from '../../custom/AppLink'
 
-const UserNav = () => (
-  <>
-    <Menu>
-      <MenuButton rightIcon={<ChevronDownIcon />} as={Button}>
-        Konto
-      </MenuButton>
-      <MenuList>
-        <AppLink to='/profile/self'>
-          <MenuItem>Profile</MenuItem>
-        </AppLink>
+const UserNav = ({ id }: { id: number }) => {
+  return (
+    <>
+      <Menu>
+        <MenuButton rightIcon={<ChevronDownIcon />} as={Button}>
+          Account
+        </MenuButton>
+        <MenuList>
+          <AppLink to={`/profile/${id}`}>
+            <MenuItem>Profile</MenuItem>
+          </AppLink>
 
-        <AppLink to='/profile/self/settings'>
-          <MenuItem>Settings</MenuItem>
-        </AppLink>
+          <AppLink to={`/profile/${id}/settings`}>
+            <MenuItem>Settings</MenuItem>
+          </AppLink>
 
-        <AppLink to='/logout'>
-          <MenuItem>Log out</MenuItem>
-        </AppLink>
-      </MenuList>
-    </Menu>
-  </>
-)
+          <AppLink to='/logout'>
+            <MenuItem>Log out</MenuItem>
+          </AppLink>
+        </MenuList>
+      </Menu>
+    </>
+  )
+}
 
 const GuestNav = () => (
   <>
@@ -49,5 +51,5 @@ type HeaderNavProps = {}
 export default function HeaderNav(props: HeaderNavProps) {
   const user = useAppSelector((state) => state.auth.user)
 
-  return <Flex gap='1em'>{user ? <UserNav /> : <GuestNav />}</Flex>
+  return <Flex gap='1em'>{user ? <UserNav id={user.id} /> : <GuestNav />}</Flex>
 }
