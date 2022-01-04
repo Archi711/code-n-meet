@@ -1,22 +1,34 @@
-import { FormControl, FormLabel, Input, FormHelperText, FormErrorMessage } from '@chakra-ui/react';
-import { useField } from 'formik';
+import {
+  FormControl,
+  FormLabel,
+  FormHelperText,
+  FormErrorMessage,
+} from '@chakra-ui/react'
+import { useField } from 'formik'
+import AppInput, { InputType } from './AppInput'
 
 type AppFormFieldProps = {
   labelText: string
-  helperText?: string,
-  name: string,
-  type: 'number' | 'text' | 'password' | 'email'
+  helperText?: string
+  name: string
+  type: InputType
 }
 
 export default function AppFormField(props: AppFormFieldProps) {
   const [field, meta] = useField(props.name)
+  const inputProps = {
+    ...field,
+    id: props.name,
+    type: props.type,
+  }
+
   return (
     <FormControl isInvalid={Boolean(meta.error) && meta.touched}>
       <FormLabel htmlFor={props.name}>{props.labelText}</FormLabel>
-      <Input {...field} id={props.name} type={props.type} />
-      {
-        props.helperText ? <FormHelperText>{props.helperText}</FormHelperText> : null
-      }
+      <AppInput inputProps={inputProps} />
+      {props.helperText ? (
+        <FormHelperText>{props.helperText}</FormHelperText>
+      ) : null}
       <FormErrorMessage>{meta.error}</FormErrorMessage>
     </FormControl>
   )
