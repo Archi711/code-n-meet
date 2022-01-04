@@ -26,3 +26,7 @@ export type RegisterBody = {
 export type RegisterResponse = {
   success: boolean
 }
+
+export type EditProfileData = Partial<Omit<UserData, 'id'>> & {
+  password: string
+}
