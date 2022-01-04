@@ -7,24 +7,15 @@ import {
   HStack,
   Text,
 } from '@chakra-ui/react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useAppSelector } from '../../app/hooks'
 import AppLink from '../custom/AppLink'
 
 export default function Profile() {
   const params = useParams()
-  const navigate = useNavigate()
   const userData = useAppSelector((state) => state.auth.user)
-  const isOwn = params.id === 'self'
-  const profileId = isOwn ? userData?.id : Number(params.id)
-  if (!userData?.id && params.id === 'self') {
-    navigate('/login', {
-      state: {
-        from: '/profile/self',
-        message: profileId ? 'Unauthorized' : 'Unknown error',
-      },
-    })
-  }
+  const profileId = Number(params.id)
+  const isOwn = profileId === userData?.id
 
   return (
     <Grid templateColumns='repeat(3, 1fr)' gap={2}>
@@ -47,7 +38,7 @@ export default function Profile() {
         </HStack>
         <Divider />
         {isOwn ? (
-          <AppLink to={`/profile/self/settings`}>
+          <AppLink to={`/profile/${profileId}/settings`}>
             <Button>Edit</Button>
           </AppLink>
         ) : null}
