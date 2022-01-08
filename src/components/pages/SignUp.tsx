@@ -53,7 +53,7 @@ export default function SignUp() {
           <AppFormField labelText='Hasło' name='password' type='password' />
           <AppFormField labelText='Email' name='email' type='email' />
           <Button isLoading={isLoading} bg='green.300' type='submit'>
-            Załóż konto
+            Sign up
           </Button>
         </Stack>
       </Formik>

@@ -10,6 +10,7 @@ import NotFound from './NotFound'
 import PostCreator from './PostCreator'
 import Profile from './Profile'
 import ProfileSettings from './ProfileSettings'
+import Registered from './Registered'
 import SignUp from './SignUp'
 
 
@@ -21,6 +22,7 @@ export default function AppRoutes() {
       <Route path='/' element={<Home />} />
       <Route path='/login' element={<Login />} />
       <Route path='/signUp' element={<SignUp />} />
+      <Route path='/registered' element={<Registered />} />
       <Route path='/logout' element={<Logout />} />
       <Route path='/profile/:id' element={<Profile />} />
       <Route path='/profile/:id/settings' element={<ProfileSettings />} />
