@@ -33,7 +33,10 @@ export default function ProfileSettings() {
       <Center>
         <Formik<EditProfileData>
           initialValues={initialValues}
-          onSubmit={(values, helpers) => {}}
+          onSubmit={(values, helpers) => {
+            console.dir(values)
+            helpers.setSubmitting(false)
+          }}
         >
           <Stack as={Form}>
             <Stack>
@@ -50,7 +53,7 @@ export default function ProfileSettings() {
             </Stack>
             <Stack>
               <Text>personal data</Text>
-              <AppFormField name='name' labelText='name' type='email' />
+              <AppFormField name='name' labelText='name' type='text' />
               <AppFormField
                 name='profileDescription'
                 labelText='profile description'
@@ -70,6 +73,9 @@ export default function ProfileSettings() {
                 type='checkbox'
               />
             </Stack>
+            <Button type='submit' variant='solid' colorScheme='blue'>
+              save changes
+            </Button>
           </Stack>
         </Formik>
       </Center>

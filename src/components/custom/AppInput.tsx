@@ -6,8 +6,8 @@ import {
   NumberInputStepper,
   Textarea,
   Input,
-  Switch,
 } from '@chakra-ui/react'
+import { SwitchControl } from 'formik-chakra-ui'
 import { FieldInputProps } from 'formik'
 
 export type InputType =
@@ -37,7 +37,9 @@ export const AppNumberInput = (props: InputProps) => {
 
 export const AppTextFieldInput = (props: InputProps) => <Textarea {...props} />
 
-export const AppCheckboxInput = (props: InputProps) => <Switch {...props} />
+export const AppCheckboxInput = (props: InputProps) => (
+  <SwitchControl {...props} />
+)
 
 export default function AppInput({ inputProps }: { inputProps: InputProps }) {
   if (inputProps.type === 'number') return <AppNumberInput {...inputProps} />

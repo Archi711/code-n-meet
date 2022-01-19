@@ -12,11 +12,22 @@ export default function Logout() {
     dispatch(logout())
   }, [dispatch])
 
-  return <Center>
-    <Flex border='1px solid #4e4e4e' alignItems={'center'} borderRadius={'12px'} p='2em' flexDirection={'column'} gap='1em'>
-      <CheckIcon />
-      <Text color={'GrayText'} fontSize='sm'>Poprawnie wylogowano</Text>
-      <AppLink to='/'>Wróć na stronę główną</AppLink>
-    </Flex>
-  </Center>
+  return (
+    <Center>
+      <Flex
+        border='1px solid #4e4e4e'
+        alignItems={'center'}
+        borderRadius={'12px'}
+        p='2em'
+        flexDirection={'column'}
+        gap='1em'
+      >
+        <CheckIcon />
+        <Text color={'GrayText'} fontSize='sm'>
+          Logged out
+        </Text>
+        <AppLink to='/'>Go to home</AppLink>
+      </Flex>
+    </Center>
+  )
 }
