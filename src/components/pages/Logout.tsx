@@ -24,7 +24,7 @@ export default function Logout() {
       >
         <CheckIcon />
         <Text color={'GrayText'} fontSize='sm'>
-          Logged out
+          Logged out, see you soon!
         </Text>
         <AppLink to='/'>Go to home</AppLink>
       </Flex>
