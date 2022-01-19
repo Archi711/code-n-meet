@@ -1,5 +1,5 @@
 import { Button, Center, Stack } from '@chakra-ui/react'
-import { Formik, Form, FormikHelpers } from 'formik'
+import { Formik, Form } from 'formik'
 import { RegisterBody } from '../../types/index'
 import AppFormField from '../custom/AppFormField'
 import { RegisterBodyValidation } from '../../validations/index'
@@ -16,10 +16,7 @@ const initialValues: RegisterBody = {
 export default function SignUp() {
   const navigate = useNavigate()
   const [trigger, { data, isLoading }] = useSignupMutation()
-  const handleSubmit = (
-    values: RegisterBody,
-    helpers: FormikHelpers<RegisterBody>
-  ) => {
+  const handleSubmit = (values: RegisterBody) => {
     console.dir(values)
     trigger(values)
   }

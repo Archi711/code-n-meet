@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom'
 import Group from './Group'
 import GroupCreator from './GroupCreator'
 import GroupDetails from './GroupDetails'
+import Groups from './Groups'
 import GroupSettings from './GroupSettings'
 import Home from './Home'
 import Login from './Login'
@@ -13,10 +14,7 @@ import ProfileSettings from './ProfileSettings'
 import Registered from './Registered'
 import SignUp from './SignUp'
 
-
-
 export default function AppRoutes() {
-
   return (
     <Routes>
       <Route path='/' element={<Home />} />
@@ -27,6 +25,7 @@ export default function AppRoutes() {
       <Route path='/profile/:id' element={<Profile />} />
       <Route path='/profile/:id/settings' element={<ProfileSettings />} />
       <Route path='/post-creator' element={<PostCreator />} />
+      <Route path='/groups' element={<Groups />} />
       <Route path='/group/:id' element={<Group />} />
       <Route path='/group/:id/settings' element={<GroupSettings />} />
       <Route path='/group/:id/details' element={<GroupDetails />} />
