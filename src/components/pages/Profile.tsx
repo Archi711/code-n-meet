@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAppSelector } from '../../app/hooks'
 import { useLazyGetUserQuery } from '../../redux/services/api'
+//import { useLazyGetPostsQuery } from '../../redux/services/api.posts'
 import AppLink from '../custom/AppLink'
 import GHProfileData from '../features/profile/GithubProfileData'
 
@@ -25,18 +26,21 @@ export default function Profile() {
   const profileId = Number(params.id)
   const isOwn = profileId === authUser?.id
 
-  const [trigger, { data: UDdata, isLoading: UDisLoading, error: UDerror }] =
+  const [triggerUP, { data: UDdata, isLoading: UDisLoading, error: UDerror }] =
     useLazyGetUserQuery()
+
+  //const [triggerUD, {data: UPdata, isLoading: UPisLoading, error: UPerror}] = useLazyGetPostsQuery()
 
   useEffect(() => {
     if (!userData && !UDdata && !UDisLoading && !UDerror) {
-      trigger(profileId)
+      triggerUP(profileId)
     }
   }, [])
 
   useEffect(() => {
     if (UDdata) {
       setUserData(UDdata)
+      //triggerUD()
     }
   }, [UDdata])
 
