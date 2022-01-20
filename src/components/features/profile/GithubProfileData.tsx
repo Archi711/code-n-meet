@@ -37,12 +37,6 @@ export default function GHProfileData({ user }: { user: UserData }) {
     }
   }, [])
 
-  useEffect(() => {
-    if (data) {
-      console.log(data)
-    }
-  }, [data])
-
   if (isLoading) {
     return (
       <Center>

@@ -13,9 +13,10 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAppSelector } from '../../app/hooks'
 import { useLazyGetUserQuery } from '../../redux/services/api'
-//import { useLazyGetPostsQuery } from '../../redux/services/api.posts'
 import AppLink from '../custom/AppLink'
 import GHProfileData from '../features/profile/GithubProfileData'
+import Posts from '../features/profile/Posts'
+import Groups from '../features/profile/Groups'
 
 export default function Profile() {
   const params = useParams()
@@ -26,21 +27,18 @@ export default function Profile() {
   const profileId = Number(params.id)
   const isOwn = profileId === authUser?.id
 
-  const [triggerUP, { data: UDdata, isLoading: UDisLoading, error: UDerror }] =
+  const [triggerUD, { data: UDdata, isLoading: UDisLoading, error: UDerror }] =
     useLazyGetUserQuery()
-
-  //const [triggerUD, {data: UPdata, isLoading: UPisLoading, error: UPerror}] = useLazyGetPostsQuery()
 
   useEffect(() => {
     if (!userData && !UDdata && !UDisLoading && !UDerror) {
-      triggerUP(profileId)
+      triggerUD(profileId)
     }
   }, [])
 
   useEffect(() => {
     if (UDdata) {
       setUserData(UDdata)
-      //triggerUD()
     }
   }, [UDdata])
 
@@ -88,7 +86,7 @@ export default function Profile() {
           <GHProfileData user={userData} />
         ) : null}
       </GridItem>
-      <GridItem colSpan={3}>
+      <GridItem colSpan={3} display={'flex'} flexDirection={'column'} gap={4}>
         <Stack
           bg='whiteAlpha.50'
           borderRadius={'lg'}
@@ -96,7 +94,16 @@ export default function Profile() {
           gap={4}
           display={'flex'}
         >
-          <Text fontSize={'2xl'}>{isOwn ? 'Your posts:' : 'Posts:'} </Text>
+          <Groups isOwn={isOwn} userId={userData?.id} />
+        </Stack>
+        <Stack
+          bg='whiteAlpha.50'
+          borderRadius={'lg'}
+          p={2}
+          gap={4}
+          display={'flex'}
+        >
+          <Posts isOwn={isOwn} userId={userData?.id} />
         </Stack>
       </GridItem>
     </Grid>

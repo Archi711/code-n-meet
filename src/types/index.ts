@@ -31,6 +31,8 @@ export type EditProfileData = Partial<Omit<UserData, 'id'>> & {
   password: string
 }
 
+export type GroupPrivacySP = 'all' | 'public' | 'private'
+
 export type PostResponse = {
   id: number
   title: string
@@ -43,6 +45,23 @@ export type PostResponse = {
     id: number
     name: string
   }
+}
+
+export type GroupResponse = {
+  id: number
+  name: string
+  description: string | null
+  type: string
+  isPrivate: boolean
+  repoLink: string
+  User: {
+    id: number
+    name: string
+  }
+  Users: {
+    id: number
+    name: string
+  }[]
 }
 
 export type GHProfileResponse = {
