@@ -61,7 +61,7 @@ export default function GHProfileData({ user }: { user: UserData }) {
       <DataCell title='Profile url'>
         {data?.html_url && (
           <Link isExternal href={`${data?.html_url}` || ''}>
-            {data?.url}
+            {data?.html_url}
           </Link>
         )}
       </DataCell>
