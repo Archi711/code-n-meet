@@ -1,3 +1,11 @@
+export enum GroupType {
+  LANGUAGE = 'LANGUAGE',
+  PROJECT = 'PROJECT',
+  COMPANY = 'COMPANY',
+  COMMUNITY = 'COMMUNITY',
+}
+
+
 export type UserData = {
   id: number
   name: string
@@ -47,6 +55,12 @@ export type PostResponse = {
   }
 }
 
+export type PostBody = {
+  title: string
+  content: string
+  idGroup: number
+}
+
 export type GroupResponse = {
   id: number
   name: string
@@ -62,6 +76,15 @@ export type GroupResponse = {
     id: number
     name: string
   }[]
+}
+
+
+export type GroupCreateBody = {
+  name: string
+  description: string
+  type: GroupType,
+  isPrivate: boolean
+  repoLink?: string
 }
 
 export type GHProfileResponse = {
