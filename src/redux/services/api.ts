@@ -1,5 +1,6 @@
+import omit from 'lodash/omit';
 import { RootState } from './../../app/store'
-import { LoginResponse, LoginBody } from './../../types/index'
+import { LoginResponse, LoginBody, EditProfileData } from './../../types/index'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { RegisterResponse, RegisterBody } from '../../types/index'
 
@@ -53,6 +54,13 @@ export const api = createApi({
           ]
           : [{ type: 'Users', id: 'LIST' }],
     }),
+    updateUser: builder.mutation<LoginResponse['user'], EditProfileData & { id: number }>({
+      query: (body) => ({
+        url: `users/${body.id}`,
+        method: 'PATCH',
+        body: omit(body, 'id')
+      })
+    })
   }),
 })
 
@@ -61,4 +69,5 @@ export const {
   useSignupMutation,
   useGetUserQuery,
   useLazyGetUserQuery,
+  useUpdateUserMutation,
 } = api

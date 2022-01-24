@@ -32,9 +32,9 @@ export type RegisterResponse = {
   success: boolean
 }
 
-export type EditProfileData = Partial<Omit<UserData, 'id'>> & {
+export type EditProfileData = Partial<Omit<UserData, 'id'> & {
   password: string
-}
+}>
 
 export type GroupPrivacySP = 'all' | 'public' | 'private'
 
