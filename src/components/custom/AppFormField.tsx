@@ -5,13 +5,14 @@ import {
   FormErrorMessage,
 } from '@chakra-ui/react'
 import { useField } from 'formik'
-import AppInput, { InputType } from './AppInput'
+import AppInput, { InputType, SelectOptions } from './AppInput'
 
 type AppFormFieldProps = {
   labelText: string
   helperText?: string
   name: string
   type: InputType
+  selectOptions?: SelectOptions
 }
 
 export default function AppFormField(props: AppFormFieldProps) {
@@ -20,6 +21,7 @@ export default function AppFormField(props: AppFormFieldProps) {
     ...field,
     id: props.name,
     type: props.type,
+    ...(props.selectOptions && { selectOptions: props.selectOptions })
   }
 
   return (

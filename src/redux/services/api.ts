@@ -17,7 +17,7 @@ export const api = createApi({
       return headers
     },
   }),
-  tagTypes: ['Users', 'Posts'],
+  tagTypes: ['Users', 'Posts', 'Groups'],
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, LoginBody>({
       query: (body) => ({
@@ -28,9 +28,9 @@ export const api = createApi({
       invalidatesTags: (result) =>
         result
           ? [
-              { type: 'Users' as const, id: result.user.id },
-              { type: 'Users', id: 'LIST' },
-            ]
+            { type: 'Users' as const, id: result.user.id },
+            { type: 'Users', id: 'LIST' },
+          ]
           : [{ type: 'Users', id: 'LIST' }],
     }),
     signup: builder.mutation<RegisterResponse, RegisterBody>({
@@ -48,9 +48,9 @@ export const api = createApi({
       providesTags: (result) =>
         result
           ? [
-              { type: 'Users' as const, id: result.id },
-              { type: 'Users', id: 'LIST' },
-            ]
+            { type: 'Users' as const, id: result.id },
+            { type: 'Users', id: 'LIST' },
+          ]
           : [{ type: 'Users', id: 'LIST' }],
     }),
   }),

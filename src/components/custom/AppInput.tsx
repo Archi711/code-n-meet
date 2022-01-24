@@ -7,8 +7,9 @@ import {
   Textarea,
   Input,
 } from '@chakra-ui/react'
-import { SwitchControl } from 'formik-chakra-ui'
+import { SelectControl, SwitchControl } from 'formik-chakra-ui'
 import { FieldInputProps } from 'formik'
+import omit from 'lodash/omit'
 
 export type InputType =
   | 'number'
@@ -17,10 +18,12 @@ export type InputType =
   | 'email'
   | 'textarea'
   | 'checkbox'
+  | 'select'
 
 export type InputProps = {
   type?: InputType
   name: string
+  selectOptions?: SelectOptions
 } & FieldInputProps<any>
 
 export const AppNumberInput = (props: InputProps) => {
@@ -35,6 +38,14 @@ export const AppNumberInput = (props: InputProps) => {
   )
 }
 
+export type SelectOptions = { label: string, value: any }[]
+export const stringsToSelectOptions = (strings: string[]): SelectOptions => strings.map(s => ({ label: s, value: s }))
+export const AppSelectInput = ({ selectOptions, ...props }: InputProps) => <SelectControl {...omit(props, 'selectOptions')}>
+  {
+    selectOptions?.map((option, id) => (<option key={`select-option-${props.name}-${id}-${option.label.toLowerCase()}`} value={option.value}>{option.label}</option>))
+  }
+</SelectControl>
+
 export const AppTextFieldInput = (props: InputProps) => <Textarea {...props} />
 
 export const AppCheckboxInput = (props: InputProps) => (
@@ -47,5 +58,6 @@ export default function AppInput({ inputProps }: { inputProps: InputProps }) {
     return <AppTextFieldInput {...inputProps} />
   if (inputProps.type === 'checkbox')
     return <AppCheckboxInput {...inputProps} />
+  if (inputProps.type === 'select') return <AppSelectInput {...inputProps} />
   else return <Input {...inputProps} />
 }

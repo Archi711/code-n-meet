@@ -1,3 +1,4 @@
+import { GroupTypes } from './../types/index';
 import * as Yup from 'yup'
 
 export const LoginBodyValidation = Yup.object({
@@ -24,4 +25,20 @@ export const RegisterBodyValidation = Yup.object({
       'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character'
     ),
   email: Yup.string().email().required(),
+})
+
+export const CreateGroupValidation = Yup.object({
+
+  name: Yup.string().min(2).max(64).required(),
+  description: Yup.string().max(1000).required(),
+  type: Yup.string().oneOf([...GroupTypes]).required(),
+  isPrivate: Yup.bool(),
+  repoLink: Yup.string()
+
+})
+
+export const CreatePostValidation = Yup.object({
+
+  title: Yup.string().min(3).max(255).required(),
+  content: Yup.string().max(16000)
 })

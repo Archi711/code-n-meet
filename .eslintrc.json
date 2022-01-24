@@ -6,6 +6,7 @@
     "extends": [
         "plugin:react/recommended",
         "plugin:react/jsx-runtime",
+        "plugin:@typescript-eslint/eslint-recommended",
         "eslint:recommended",
         "prettier"
     ],
@@ -22,5 +23,7 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": "error"
     }
 }

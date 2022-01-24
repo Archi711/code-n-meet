@@ -4,6 +4,7 @@ import useApiError from '../../../hooks/useApiError'
 import { useLazyGetPostsQuery } from '../../../redux/services/api.posts'
 import AppLink from '../../custom/AppLink'
 import PostShort from '../../common/shorts/PostShort'
+import { ArrowForwardIcon } from '@chakra-ui/icons'
 
 type PostsProps = {
   isOwn: boolean
@@ -44,12 +45,17 @@ export default function Posts({ isOwn, userId }: PostsProps) {
           />
         ))
       ) : (
-        <Center gap={4} flexDirection={'column'}>
+        <Center gap={2} flexDirection={'column'}>
           <Text fontSize='2xl'>No posts found</Text>
           {isOwn ? (
-            <AppLink to='/post-creator'>
-              <Button variant={'outline'}>create first post!</Button>
-            </AppLink>
+            <>
+              <Text>pick a group and create content!</Text>
+              <AppLink to='/groups'>
+                <Button rightIcon={<ArrowForwardIcon />}>
+                  to groups
+                </Button>
+              </AppLink>
+            </>
           ) : null}
         </Center>
       )}

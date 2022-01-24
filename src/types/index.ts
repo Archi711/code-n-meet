@@ -1,10 +1,7 @@
-export enum GroupType {
-  LANGUAGE = 'LANGUAGE',
-  PROJECT = 'PROJECT',
-  COMPANY = 'COMPANY',
-  COMMUNITY = 'COMMUNITY',
-}
 
+export const GroupTypes = ["LANGUAGE", "PROJECT", "COMPANY", "COMMUNITY"] as const
+
+export type GroupType = typeof GroupTypes[number]
 
 export type UserData = {
   id: number

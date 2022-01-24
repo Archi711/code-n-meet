@@ -8,14 +8,14 @@ export const PostsApi = api.injectEndpoints({
       { id: number; for: 'user' | 'group' }
     >({
       query: (body) => ({
-        url: `posts/${body.id}?by=${body.for}`,
+        url: `${body.for}s/${body.id}/posts`,
       }),
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }) => ({ type: 'Posts' as const, id })),
-              { type: 'Posts', id: 'LIST' },
-            ]
+            ...result.map(({ id }) => ({ type: 'Posts' as const, id })),
+            { type: 'Posts', id: 'LIST' },
+          ]
           : [{ type: 'Posts', id: 'LIST' }],
     }),
   }),

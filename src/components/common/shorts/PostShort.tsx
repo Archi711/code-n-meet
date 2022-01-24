@@ -8,7 +8,7 @@ export default function PostShort({ post }: { post: PostResponse }) {
     <VStack>
       <Text>{post.title}</Text>
       <ReactMarkdown components={ChakraUIRenderer()} skipHtml>
-        {post.content}
+        {post.content.substring(50).concat('...')}
       </ReactMarkdown>
     </VStack>
   )

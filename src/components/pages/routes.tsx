@@ -24,11 +24,11 @@ export default function AppRoutes() {
       <Route path='/logout' element={<Logout />} />
       <Route path='/profile/:id' element={<Profile />} />
       <Route path='/profile/:id/settings' element={<ProfileSettings />} />
-      <Route path='/post-creator' element={<PostCreator />} />
+      <Route path='/groups/:id/post-creator' element={<PostCreator />} />
       <Route path='/groups' element={<Groups />} />
-      <Route path='/group/:id' element={<Group />} />
-      <Route path='/group/:id/settings' element={<GroupSettings />} />
-      <Route path='/group/:id/details' element={<GroupDetails />} />
+      <Route path='/groups/:id' element={<Group />} />
+      <Route path='/groups/:id/settings' element={<GroupSettings />} />
+      <Route path='/groups/:id/details' element={<GroupDetails />} />
       <Route path='/group-creator' element={<GroupCreator />} />
       <Route path='*' element={<NotFound />} />
     </Routes>
