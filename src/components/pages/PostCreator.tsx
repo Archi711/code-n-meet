@@ -15,8 +15,11 @@ import {
 } from '@chakra-ui/react'
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
 import { Form, Formik, FormikHelpers } from 'formik'
+import { useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import useApiError from '../../hooks/useApiError'
+import { useAddPostMutation } from '../../redux/services/api.posts'
 import { PostBody } from '../../types'
 import { CreatePostValidation } from '../../validations'
 import AppFormField from '../custom/AppFormField'
@@ -25,9 +28,18 @@ import NotFound from './NotFound'
 
 export default function PostCreator() {
   const params = useParams()
+  const navigate = useNavigate()
+  const [trigger, { data, isLoading, error }] = useAddPostMutation()
+  useApiError(error, {})
+
+  useEffect(() => {
+    if (data) {
+      navigate(`/groups/${params.id}/posts/${data.id}`)
+    }
+  }, [data])
   if (!params.id) return <NotFound />
   const handleSubmit = (values: PostBody, helpers: FormikHelpers<PostBody>) => {
-    console.log(values)
+    trigger(values)
     helpers.setSubmitting(false)
   }
   return (
@@ -67,7 +79,11 @@ export default function PostCreator() {
                         labelText='content'
                       />
                       <HStack>
-                        <Button type='submit' colorScheme={'green'}>
+                        <Button
+                          isLoading={isLoading}
+                          type='submit'
+                          colorScheme={'green'}
+                        >
                           add post
                         </Button>
                       </HStack>

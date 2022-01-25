@@ -8,6 +8,7 @@ import Home from './Home'
 import Login from './Login'
 import Logout from './Logout'
 import NotFound from './NotFound'
+import Post from './Post'
 import PostCreator from './PostCreator'
 import Profile from './Profile'
 import ProfileSettings from './ProfileSettings'
@@ -25,6 +26,7 @@ export default function AppRoutes() {
       <Route path='/profile/:id' element={<Profile />} />
       <Route path='/profile/:id/settings' element={<ProfileSettings />} />
       <Route path='/groups/:id/post-creator' element={<PostCreator />} />
+      <Route path='/groups/:id/posts/:id' element={<Post />} />
       <Route path='/groups' element={<Groups />} />
       <Route path='/groups/:id' element={<Group />} />
       <Route path='/groups/:id/settings' element={<GroupSettings />} />
