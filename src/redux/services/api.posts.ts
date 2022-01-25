@@ -1,4 +1,4 @@
-import { PostResponse } from './../../types/index'
+import { PostBody, PostResponse } from './../../types/index'
 import { api } from './api'
 
 export const PostsApi = api.injectEndpoints({
@@ -13,12 +13,21 @@ export const PostsApi = api.injectEndpoints({
       providesTags: (result) =>
         result
           ? [
-            ...result.map(({ id }) => ({ type: 'Posts' as const, id })),
-            { type: 'Posts', id: 'LIST' },
-          ]
+              ...result.map(({ id }) => ({ type: 'Posts' as const, id })),
+              { type: 'Posts', id: 'LIST' },
+            ]
           : [{ type: 'Posts', id: 'LIST' }],
+    }),
+    addPost: builder.mutation<PostBody, PostResponse>({
+      query: (body) => ({
+        url: 'posts',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: [{ type: 'Posts', id: 'LIST' }],
     }),
   }),
 })
 
-export const { useGetPostsQuery, useLazyGetPostsQuery } = PostsApi
+export const { useGetPostsQuery, useLazyGetPostsQuery, useAddPostMutation } =
+  PostsApi
