@@ -18,6 +18,18 @@ export const PostsApi = api.injectEndpoints({
             ]
           : [{ type: 'Posts', id: 'LIST' }],
     }),
+    getPost: builder.query<PostResponse, number>({
+      query: (id) => ({
+        url: `posts/${id}`,
+      }),
+      providesTags: (result) =>
+        result
+          ? [
+              { type: 'Posts' as const, id: result.id },
+              { type: 'Posts', id: 'LIST' },
+            ]
+          : [{ type: 'Posts', id: 'LIST' }],
+    }),
     addPost: builder.mutation<{ id: number }, PostBody>({
       query: (body) => ({
         url: 'posts',
@@ -29,5 +41,9 @@ export const PostsApi = api.injectEndpoints({
   }),
 })
 
-export const { useGetPostsQuery, useLazyGetPostsQuery, useAddPostMutation } =
-  PostsApi
+export const {
+  useGetPostsQuery,
+  useGetPostQuery,
+  useLazyGetPostsQuery,
+  useAddPostMutation,
+} = PostsApi
