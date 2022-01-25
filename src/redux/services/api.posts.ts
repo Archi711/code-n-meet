@@ -18,7 +18,7 @@ export const PostsApi = api.injectEndpoints({
             ]
           : [{ type: 'Posts', id: 'LIST' }],
     }),
-    addPost: builder.mutation<PostBody, PostResponse>({
+    addPost: builder.mutation<PostResponse, PostBody>({
       query: (body) => ({
         url: 'posts',
         method: 'POST',
