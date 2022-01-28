@@ -37,7 +37,7 @@ export default function PostShort({ post }: { post: PostResponse }) {
         </HStack>
         <HStack>
           <Text>from</Text>
-          <AppLink color='blue.200' to={`/users/${post.User.id}`}>
+          <AppLink color='blue.200' to={`/profile/${post.User.id}`}>
             {post.User.name || post.User.id}
           </AppLink>
         </HStack>
