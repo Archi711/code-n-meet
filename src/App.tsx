@@ -6,7 +6,7 @@ import AppRoutes from './components/pages/routes'
 
 function App() {
   return (
-    <Container maxW='container.lg'>
+    <Container maxW='container.xl'>
       <AppHelmet />
       <BrowserRouter>
         <AppHeader />
