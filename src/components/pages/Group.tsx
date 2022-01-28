@@ -67,7 +67,7 @@ export default function Group() {
               <Badge colorScheme={badgeVariants[dataG.type]}>
                 {dataG.type}
               </Badge>
-              <Badge colorScheme={dataG.isPrivate ? 'blackAlpha' : 'pink'}>
+              <Badge colorScheme={dataG.isPrivate ? 'whiteAlpha' : 'pink'}>
                 {dataG.isPrivate ? 'Private' : 'Public'}
               </Badge>
               <Badge colorScheme='yellow'>

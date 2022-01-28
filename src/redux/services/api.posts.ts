@@ -3,12 +3,24 @@ import { api } from './api'
 
 export const PostsApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    getPosts: builder.query<
+    getPostsFor: builder.query<
       PostResponse[],
       { id: number; for: 'user' | 'group' }
     >({
       query: (body) => ({
         url: `${body.for}s/${body.id}/posts`,
+      }),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: 'Posts' as const, id })),
+              { type: 'Posts', id: 'LIST' },
+            ]
+          : [{ type: 'Posts', id: 'LIST' }],
+    }),
+    getPosts: builder.query<PostResponse[], undefined>({
+      query: () => ({
+        url: `posts`,
       }),
       providesTags: (result) =>
         result
@@ -43,7 +55,8 @@ export const PostsApi = api.injectEndpoints({
 
 export const {
   useGetPostsQuery,
+  useGetPostsForQuery,
   useGetPostQuery,
-  useLazyGetPostsQuery,
+  useLazyGetPostsForQuery,
   useAddPostMutation,
 } = PostsApi

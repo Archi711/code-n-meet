@@ -1,7 +1,7 @@
 import { Stack, Divider, Spinner, Center, Button, Text } from '@chakra-ui/react'
 import { useEffect } from 'react'
 import useApiError from '../../../hooks/useApiError'
-import { useLazyGetPostsQuery } from '../../../redux/services/api.posts'
+import { useLazyGetPostsForQuery } from '../../../redux/services/api.posts'
 import AppLink from '../../custom/AppLink'
 import PostShort from '../../common/shorts/PostShort'
 import { ArrowForwardIcon } from '@chakra-ui/icons'
@@ -13,7 +13,7 @@ type PostsProps = {
 
 export default function Posts({ isOwn, userId }: PostsProps) {
   const [triggerUP, { data: UPdata, isLoading: UPisLoading, error: UPerror }] =
-    useLazyGetPostsQuery()
+    useLazyGetPostsForQuery()
 
   useEffect(() => {
     if (userId) {
@@ -51,9 +51,7 @@ export default function Posts({ isOwn, userId }: PostsProps) {
             <>
               <Text>pick a group and create content!</Text>
               <AppLink to='/groups'>
-                <Button rightIcon={<ArrowForwardIcon />}>
-                  to groups
-                </Button>
+                <Button rightIcon={<ArrowForwardIcon />}>to groups</Button>
               </AppLink>
             </>
           ) : null}

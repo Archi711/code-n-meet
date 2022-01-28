@@ -31,7 +31,7 @@ export default function Profile() {
     useLazyGetUserQuery()
 
   useEffect(() => {
-    if (!userData && !UDdata && !UDisLoading && !UDerror) {
+    if (!UDdata && !UDisLoading && !UDerror) {
       triggerUD(profileId)
     }
   }, [])
