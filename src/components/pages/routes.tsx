@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom'
+import About from './About'
 import Group from './Group'
 import GroupCreator from './GroupCreator'
 import GroupDetails from './GroupDetails'
@@ -32,6 +33,7 @@ export default function AppRoutes() {
       <Route path='/groups/:id/settings' element={<GroupSettings />} />
       <Route path='/groups/:id/details' element={<GroupDetails />} />
       <Route path='/group-creator' element={<GroupCreator />} />
+      <Route path='/about' element={<About />} />
       <Route path='*' element={<NotFound />} />
     </Routes>
   )
