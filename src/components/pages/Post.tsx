@@ -38,7 +38,7 @@ export default function Post() {
           <Text>
             Author:{' '}
             <AppLink color='yellow.100' to={`/profile/${data.User.id}`}>
-              {data.User.name}
+              {data.User.name || data.User.id}
             </AppLink>
           </Text>
           <Text>

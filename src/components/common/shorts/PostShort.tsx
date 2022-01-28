@@ -29,10 +29,18 @@ export default function PostShort({ post }: { post: PostResponse }) {
         </LinkOverlay>
       </Heading>
       <HStack>
-        <Text>from</Text>
-        <AppLink color='yellow.200' to={`/groups/${post.Group.id}`}>
-          {post.Group.name}
-        </AppLink>
+        <HStack>
+          <Text>from</Text>
+          <AppLink color='yellow.200' to={`/groups/${post.Group.id}`}>
+            {post.Group.name}
+          </AppLink>
+        </HStack>
+        <HStack>
+          <Text>from</Text>
+          <AppLink color='blue.200' to={`/users/${post.User.id}`}>
+            {post.User.name || post.User.id}
+          </AppLink>
+        </HStack>
       </HStack>
       <ReactMarkdown components={ChakraUIRenderer()} skipHtml>
         {post.content.substring(0, 50).concat('...')}
