@@ -1,6 +1,5 @@
-import { UserData } from './../../types/index';
+import { UserData, LoginResponse } from './../../types/index';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { LoginResponse } from '../../types';
 
 type AuthState = {
   token: string,
@@ -23,9 +22,12 @@ export const authSlice = createSlice({
     logout: (state) => {
       state.token = initialState.token
       state.user = initialState.user
+    },
+    updateUserData: (state, action: PayloadAction<LoginResponse['user']>) => {
+      state.user = action.payload
     }
   }
 })
 
 
-export const { login, logout } = authSlice.actions
+export const { login, logout, updateUserData } = authSlice.actions

@@ -20,7 +20,7 @@ export default function Groups() {
         isLoading ? <Spinner /> : null
       }
       {
-        data ? data.map((group, id) => <GroupShort key={`group-short-${group.name}-${id}`} group={group} />) : <Center><Text>No groups found</Text></Center>
+        data && !isLoading ? data.map((group, id) => <GroupShort key={`group-short-${group.name}-${id}`} group={group} />) : <Center><Text>No groups found</Text></Center>
       }
     </Stack>
   )

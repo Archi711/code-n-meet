@@ -41,3 +41,17 @@ export const CreatePostValidation = Yup.object({
   title: Yup.string().min(3).max(255).required(),
   content: Yup.string().min(32).max(16000).required(),
 })
+
+export const EditProfileValidation = Yup.object({
+  password: Yup.string()
+    .strict()
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
+      'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character'
+    ),
+  email: Yup.string().email(),
+  name: Yup.string(),
+  profileDescription: Yup.string(),
+  githubNick: Yup.string(),
+  connectWithGithub: Yup.bool()
+})

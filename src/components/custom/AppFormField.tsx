@@ -12,6 +12,7 @@ type AppFormFieldProps = {
   helperText?: string
   name: string
   type: InputType
+  placeholder?: string
   selectOptions?: SelectOptions
 }
 
@@ -21,6 +22,7 @@ export default function AppFormField(props: AppFormFieldProps) {
     ...field,
     id: props.name,
     type: props.type,
+    placeholder: props.placeholder,
     ...(props.selectOptions && { selectOptions: props.selectOptions })
   }
 

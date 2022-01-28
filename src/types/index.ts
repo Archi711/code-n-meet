@@ -34,6 +34,7 @@ export type RegisterResponse = {
 
 export type EditProfileData = Partial<Omit<UserData, 'id'> & {
   password: string
+  [key: string]: string | number | undefined | boolean
 }>
 
 export type GroupPrivacySP = 'all' | 'public' | 'private'
