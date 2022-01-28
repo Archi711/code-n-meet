@@ -6,14 +6,13 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-  HStack,
 } from '@chakra-ui/react'
 import { useAppSelector } from '../../../app/hooks'
 import AppLink from '../../custom/AppLink'
 
 const UserNav = ({ id }: { id: number }) => {
   return (
-    <HStack>
+    <Flex gap={4} direction={'row'}>
       <AppLink to='/groups'>
         <Button>Groups</Button>
       </AppLink>
@@ -35,7 +34,7 @@ const UserNav = ({ id }: { id: number }) => {
           </AppLink>
         </MenuList>
       </Menu>
-    </HStack>
+    </Flex>
   )
 }
 
@@ -54,5 +53,12 @@ const GuestNav = () => (
 export default function HeaderNav() {
   const user = useAppSelector((state) => state.auth.user)
 
-  return <Flex gap='1em'>{user ? <UserNav id={user.id} /> : <GuestNav />}</Flex>
+  return (
+    <Flex gap='1em'>
+      <AppLink to='/about'>
+        <Button>About</Button>
+      </AppLink>
+      {user ? <UserNav id={user.id} /> : <GuestNav />}
+    </Flex>
+  )
 }
