@@ -6,6 +6,7 @@ import { RegisterBodyValidation } from '../../validations/index'
 import { useSignupMutation } from '../../redux/services/api'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import useApiError from '../../hooks/useApiError'
 
 const initialValues: RegisterBody = {
   login: '',
@@ -15,12 +16,19 @@ const initialValues: RegisterBody = {
 
 export default function SignUp() {
   const navigate = useNavigate()
-  const [trigger, { data, isLoading }] = useSignupMutation()
+  const [trigger, { data, isLoading, error }] = useSignupMutation()
+  useApiError(error, {
+    500: {
+      title: 'Sign up failed',
+      description: 'Login or email used, check your data or login'
+    }
+  })
   const handleSubmit = (values: RegisterBody) => {
     console.dir(values)
     trigger(values)
   }
   useEffect(() => {
+    console.log(data)
     if (data) {
       navigate('/registered')
     }
