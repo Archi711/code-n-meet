@@ -1,15 +1,4 @@
-import {
-  Badge,
-  Button,
-  Center,
-  Grid,
-  GridItem,
-  Heading,
-  HStack,
-  Spinner,
-  Stack,
-  Text,
-} from '@chakra-ui/react'
+import { Center, Grid, GridItem, Spinner, Stack, Text } from '@chakra-ui/react'
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
 import { useParams } from 'react-router-dom'
 import useApiError from '../../hooks/useApiError'
@@ -18,13 +7,7 @@ import AppLink from '../custom/AppLink'
 import ReactMarkdown from 'react-markdown'
 import GroupPosts from '../features/group/Posts'
 import GroupUsers from '../features/group/Users'
-
-const badgeVariants: Record<string, string> = {
-  LANGUAGE: 'green',
-  COMMUNITY: 'blue',
-  PROJECT: 'orange',
-  COMPANY: 'gray',
-}
+import GroupHeader from '../features/group/Header'
 
 export default function Group() {
   const params = useParams()
@@ -33,6 +16,7 @@ export default function Group() {
     data: dataG,
     isLoading: isLoadingG,
     error: errorG,
+    refetch,
   } = useGetGroupQuery({ id: Number(id) })
   useApiError(errorG, {
     404: {
@@ -40,6 +24,7 @@ export default function Group() {
       description: 'Try again later',
     },
   })
+
   if (!dataG && isLoadingG) {
     return (
       <Center>
@@ -56,29 +41,7 @@ export default function Group() {
   } else
     return (
       <Stack>
-        <Stack
-          direction={'row'}
-          alignItems={'flex-start'}
-          justifyContent={'space-between'}
-        >
-          <Stack>
-            <Heading>{dataG.name}</Heading>
-            <HStack>
-              <Badge colorScheme={badgeVariants[dataG.type]}>
-                {dataG.type}
-              </Badge>
-              <Badge colorScheme={dataG.isPrivate ? 'whiteAlpha' : 'pink'}>
-                {dataG.isPrivate ? 'Private' : 'Public'}
-              </Badge>
-              <Badge colorScheme='yellow'>
-                Active users: {dataG.Users.length}
-              </Badge>
-            </HStack>
-          </Stack>
-          <AppLink to='post-creator'>
-            <Button colorScheme='yellow'>add post</Button>
-          </AppLink>
-        </Stack>
+        {dataG ? <GroupHeader refetch={refetch} group={dataG} /> : null}
         {dataG.description ? (
           <ReactMarkdown components={ChakraUIRenderer()}>
             {dataG.description}

@@ -1,11 +1,15 @@
-import { GroupResponse, GroupPrivacySP, GroupCreateBody } from './../../types/index'
+import {
+  GroupResponse,
+  GroupPrivacySP,
+  GroupCreateBody,
+} from './../../types/index'
 import { api } from './api'
 
 export const groupsApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getUserGroups: builder.query<
       GroupResponse[],
-      { id: number; privacy: GroupPrivacySP;[key: string]: string | number }
+      { id: number; privacy: GroupPrivacySP; [key: string]: string | number }
     >({
       query: (params) => {
         const sp = new URLSearchParams()
@@ -19,18 +23,18 @@ export const groupsApi = api.injectEndpoints({
       providesTags: (result) =>
         result
           ? [
-            ...result.map(({ id }) => ({ type: 'Groups' as const, id })),
-            { type: 'Groups', id: 'LIST' },
-          ]
+              ...result.map(({ id }) => ({ type: 'Groups' as const, id })),
+              { type: 'Groups', id: 'LIST' },
+            ]
           : [{ type: 'Groups', id: 'LIST' }],
     }),
     createGroup: builder.mutation<{ id: number }, GroupCreateBody>({
       query: (body) => ({
         url: `groups`,
-        method: "POST",
-        body
+        method: 'POST',
+        body,
       }),
-      invalidatesTags: [{ type: "Groups", id: "LIST" }]
+      invalidatesTags: [{ type: 'Groups', id: 'LIST' }],
     }),
     getGroup: builder.query<GroupResponse, { id: number }>({
       query: ({ id }) => ({
@@ -43,17 +47,35 @@ export const groupsApi = api.injectEndpoints({
     }),
     getGroups: builder.query<GroupResponse[], number | undefined>({
       query: (skip) => ({
-        url: `groups?${skip ? `skip=${skip}` : ''}`
+        url: `groups?${skip ? `skip=${skip}` : ''}`,
       }),
       providesTags: (result) =>
         result
           ? [
-            ...result.map(({ id }) => ({ type: 'Groups' as const, id })),
-            { type: 'Groups', id: 'LIST' },
-          ]
+              ...result.map(({ id }) => ({ type: 'Groups' as const, id })),
+              { type: 'Groups', id: 'LIST' },
+            ]
           : [{ type: 'Groups', id: 'LIST' }],
+    }),
+    addToGroup: builder.mutation<
+      { success: boolean },
+      { id?: number; body: { login?: string; id?: number } }
+    >({
+      query: (body) => ({
+        url: `groups/${body.id}/addUserToGroup`,
+        method: 'POST',
+        body: body.body,
+      }),
     }),
   }),
 })
 
-export const { useGetUserGroupsQuery, useLazyGetUserGroupsQuery, useCreateGroupMutation, useGetGroupQuery, useLazyGetGroupQuery, useGetGroupsQuery } = groupsApi
+export const {
+  useGetUserGroupsQuery,
+  useLazyGetUserGroupsQuery,
+  useCreateGroupMutation,
+  useGetGroupQuery,
+  useLazyGetGroupQuery,
+  useGetGroupsQuery,
+  useAddToGroupMutation,
+} = groupsApi
