@@ -55,3 +55,8 @@ export const EditProfileValidation = Yup.object({
   githubNick: Yup.string(),
   connectWithGithub: Yup.bool()
 })
+
+export const DeleteProfileValidation = Yup.object({
+  password: Yup.string().required(),
+  id: Yup.number().required()
+})

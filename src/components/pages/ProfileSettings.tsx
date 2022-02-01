@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { EditProfileData } from '../../types/index'
 import AppFormField from '../custom/AppFormField'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AiFillGithub } from 'react-icons/ai'
 import { BsFillPersonFill } from 'react-icons/bs'
 import { MdSupervisorAccount } from 'react-icons/md'
@@ -13,6 +13,7 @@ import { useUpdateUserMutation } from '../../redux/services/api'
 import useApiError from '../../hooks/useApiError'
 import { updateUserData } from '../../redux/features/authSlice'
 import isEqual from 'lodash/isEqual'
+import DeleteDialog from '../features/profileSettings/deleteDialog'
 
 const DataGroupCell = (
   props: React.PropsWithChildren<{
@@ -55,6 +56,7 @@ export default function ProfileSettings() {
   const { id } = useParams()
   const userData = useAppSelector((state) => state.auth.user)
   const dispatch = useAppDispatch()
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   useEffect(() => {
     if (!userData)
       navigate('/login', {
@@ -108,7 +110,7 @@ export default function ProfileSettings() {
                     placeholder='********'
                     type='password'
                   />
-                  <Button type='button' variant='solid' colorScheme='red'>
+                  <Button onClick={() => setIsDeleteDialogOpen(true)} type='button' variant='solid' colorScheme='red'>
                     delete account
                   </Button>
                 </DataGroupCell>
@@ -160,6 +162,7 @@ export default function ProfileSettings() {
             )}
         </Formik>
       </Center>
+      <DeleteDialog isOpen={isDeleteDialogOpen} onClose={() => setIsDeleteDialogOpen(false)} />
     </Stack>
   )
 }

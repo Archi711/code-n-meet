@@ -1,6 +1,6 @@
 import omit from 'lodash/omit';
 import { RootState } from './../../app/store'
-import { LoginResponse, LoginBody, EditProfileData } from './../../types/index'
+import { LoginResponse, LoginBody, EditProfileData, DeleteProfileBody } from './../../types/index'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { RegisterResponse, RegisterBody } from '../../types/index'
 
@@ -60,6 +60,13 @@ export const api = createApi({
         method: 'PATCH',
         body: omit(body, 'id')
       })
+    }),
+    deleteUser: builder.mutation<{ success: true } | Error, DeleteProfileBody>({
+      query: body => ({
+        url: `users/${body.id}`,
+        method: "DELETE",
+        body
+      })
     })
   }),
 })
@@ -70,4 +77,5 @@ export const {
   useGetUserQuery,
   useLazyGetUserQuery,
   useUpdateUserMutation,
+  useDeleteUserMutation
 } = api

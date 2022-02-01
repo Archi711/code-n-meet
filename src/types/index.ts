@@ -85,6 +85,11 @@ export type GroupCreateBody = {
   repoLink?: string
 }
 
+export type DeleteProfileBody = {
+  password: string
+  id: number
+}
+
 export type GHProfileResponse = {
   login: string
   id: number
