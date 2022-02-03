@@ -8,9 +8,11 @@ import ReactMarkdown from 'react-markdown'
 import GroupPosts from '../features/group/Posts'
 import GroupUsers from '../features/group/Users'
 import GroupHeader from '../features/group/Header'
+import { useAppSelector } from '../../app/hooks'
 
 export default function Group() {
   const params = useParams()
+  const user = useAppSelector((state) => state.auth.user)
   const id = params.id
   const {
     data: dataG,
@@ -52,7 +54,14 @@ export default function Group() {
             <GroupPosts />
           </GridItem>
           <GridItem p={4}>
-            <GroupUsers owner={dataG.User} users={dataG.Users} />
+            <GroupUsers
+              refetch={refetch}
+              isMember={
+                !!user?.id && dataG.Users.map((u) => u.id).includes(user.id)
+              }
+              owner={dataG.User}
+              users={dataG.Users}
+            />
           </GridItem>
         </Grid>
       </Stack>

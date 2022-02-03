@@ -67,6 +67,18 @@ export const groupsApi = api.injectEndpoints({
         body: body.body,
       }),
     }),
+    removeUserFromGroups: builder.mutation<
+      { success: boolean },
+      { gid: number; id: number }
+    >({
+      query: ({ gid, id }) => ({
+        url: `groups/${gid}/removeUserFromGroup`,
+        method: 'POST',
+        body: {
+          id,
+        },
+      }),
+    }),
   }),
 })
 
@@ -78,4 +90,5 @@ export const {
   useLazyGetGroupQuery,
   useGetGroupsQuery,
   useAddToGroupMutation,
+  useRemoveUserFromGroupsMutation,
 } = groupsApi
