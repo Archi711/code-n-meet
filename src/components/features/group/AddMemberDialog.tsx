@@ -25,7 +25,12 @@ export default function AddMemberDialog(props: AMDialogProps) {
   const params = useParams()
   if (!params.id) throw new Error('Wrong path!')
   const [trigger, { data, isLoading, error }] = useAddToGroupMutation()
-  useApiError(error, {})
+  useApiError(error, {
+    500: {
+      title: 'User adding failed',
+      description: 'Check username, and try again later',
+    },
+  })
   const handleAddToGroup = async (
     values: { nick: string },
     helpers: FormikHelpers<{ nick: string }>
