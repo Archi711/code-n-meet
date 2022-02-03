@@ -5,6 +5,7 @@ import {
   GridItem,
   Heading,
   HStack,
+  Link,
   Stack,
   Tab,
   TabList,
@@ -23,7 +24,6 @@ import { useAddPostMutation } from '../../redux/services/api.posts'
 import { PostBody } from '../../types'
 import { CreatePostValidation } from '../../validations'
 import AppFormField from '../custom/AppFormField'
-import AppLink from '../custom/AppLink'
 import NotFound from './NotFound'
 
 export default function PostCreator() {
@@ -101,30 +101,31 @@ export default function PostCreator() {
               <Stack p={'1em'}>
                 <Text>
                   Use{' '}
-                  <AppLink
+                  <Link
                     sx={{
                       color: 'yellow.200',
                     }}
-                    to='https://www.markdownguide.org/cheat-sheet/'
+                    isExternal
+                    href='https://www.markdownguide.org/cheat-sheet/'
                   >
                     markdown
-                  </AppLink>{' '}
+                  </Link>{' '}
                   to write post.
-                  <Divider />
                 </Text>
+                <Divider />
                 <Text py='1rem' fontSize='larger' color='gray.500'>
                   Post title will be shown in short description in your groups!
                 </Text>
-                <Text>
+                <Text as='span'>
                   Post should be at least{' '}
                   <Text display={'inline'} color='blue.200'>
                     32
                   </Text>{' '}
                   characters long.
                 </Text>
-                <Divider />
-                <Text>{values.content.length} / 16000 characters</Text>
               </Stack>
+              <Divider />
+              <Text>{values.content.length} / 16000 characters</Text>
             </GridItem>
           </Grid>
         )}
