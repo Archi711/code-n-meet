@@ -33,6 +33,7 @@ export default function AppRoutes() {
       <Route path='/groups/:id' element={<Group />} />
       <Route path='/groups/:id/settings' element={<GroupSettings />} />
       <Route path='/groups/:id/details' element={<GroupDetails />} />
+      <Route path='/groups/:id/group-creator' element={<GroupCreator />} />
       <Route path='/group-creator' element={<GroupCreator />} />
       <Route path='/about' element={<About />} />
       <Route path='*' element={<NotFound />} />

@@ -1,13 +1,14 @@
 import { Button, Divider, Stack, Text } from '@chakra-ui/react'
-import { Form, Formik } from 'formik'
+import { Form, Formik, FormikHelpers } from 'formik'
 import { useEffect } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import useApiError from '../../hooks/useApiError'
-import { useCreateGroupMutation } from '../../redux/services/api.groups'
+import { useCreateGroupMutation, useEditGroupMutation } from '../../redux/services/api.groups'
 import { GroupCreateBody, GroupTypes } from '../../types'
 import { CreateGroupValidation } from '../../validations'
 import AppFormField from '../custom/AppFormField'
 import { stringsToSelectOptions } from '../custom/AppInput'
+import omit from 'lodash/omit'
 
 const emptyValues: GroupCreateBody = {
   name: '',
@@ -20,17 +21,25 @@ const emptyValues: GroupCreateBody = {
 export default function GroupCreator() {
   const location = useLocation()
   const navigate = useNavigate()
-  const initialValues = (location?.state as any)?.group || emptyValues
-  const [trigger, { data, isLoading, error }] = useCreateGroupMutation()
-  useApiError(error, {})
-  const handleSubmit = (values: GroupCreateBody) => {
-    trigger(values)
+  const params = useParams()
+  const gid = params.id
+  const initialValues = (location.state && (location.state as any)?.group) || emptyValues
+  const isUpdate = !!(location.state && (location.state as any)?.group)
+  const [triggerCreate, { data: createData, isLoading: createIsLoading, error: createError }] = useCreateGroupMutation()
+  const [triggerUpdate, { data: updateData, isLoading: updateIsLoading, error: updateError }] = useEditGroupMutation()
+  useApiError(createError, {})
+  useApiError(updateError, {})
+  const handleSubmit = async (values: GroupCreateBody, helpers: FormikHelpers<GroupCreateBody>) => {
+    isUpdate ? await triggerUpdate({ ...omit(values, ['User', 'Users']), gid: Number(gid) }) : await triggerCreate(values)
+    helpers.setSubmitting(false)
   }
   useEffect(() => {
-    if (data) {
-      navigate(`/groups/${data.id}`)
+    if (createData || updateData) {
+      const id = createData?.id || updateData?.id
+      navigate(`/groups/${id}`)
     }
-  }, [data])
+  }, [createData, updateData])
+  if (!gid && isUpdate) return <Navigate to='/' />
   return (
     <Formik<GroupCreateBody>
       validationSchema={CreateGroupValidation}
@@ -47,7 +56,7 @@ export default function GroupCreator() {
           }}
         >
           <Stack>
-            <Text fontSize='2xl'>Create a group</Text>
+            <Text fontSize='2xl'>{isUpdate ? 'Edit' : 'Create a'} group</Text>
             <Divider />
           </Stack>
           <AppFormField name='name' type='text' labelText='group name' />
@@ -70,8 +79,8 @@ export default function GroupCreator() {
           {form.values.type === 'PROJECT' ? (
             <AppFormField name='repoLink' type='text' labelText='repoLink' />
           ) : null}
-          <Button type='submit' isLoading={isLoading}>
-            create group
+          <Button type='submit' isLoading={createIsLoading || updateIsLoading}>
+            {isUpdate ? 'edit' : 'create'} group
           </Button>
         </Stack>
       )}

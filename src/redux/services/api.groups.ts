@@ -4,12 +4,13 @@ import {
   GroupCreateBody,
 } from './../../types/index'
 import { api } from './api'
+import omit from 'lodash/omit';
 
 export const groupsApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getUserGroups: builder.query<
       GroupResponse[],
-      { id: number; privacy: GroupPrivacySP; [key: string]: string | number }
+      { id: number; privacy: GroupPrivacySP;[key: string]: string | number }
     >({
       query: (params) => {
         const sp = new URLSearchParams()
@@ -23,9 +24,9 @@ export const groupsApi = api.injectEndpoints({
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }) => ({ type: 'Groups' as const, id })),
-              { type: 'Groups', id: 'LIST' },
-            ]
+            ...result.map(({ id }) => ({ type: 'Groups' as const, id })),
+            { type: 'Groups', id: 'LIST' },
+          ]
           : [{ type: 'Groups', id: 'LIST' }],
     }),
     createGroup: builder.mutation<{ id: number }, GroupCreateBody>({
@@ -52,9 +53,9 @@ export const groupsApi = api.injectEndpoints({
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }) => ({ type: 'Groups' as const, id })),
-              { type: 'Groups', id: 'LIST' },
-            ]
+            ...result.map(({ id }) => ({ type: 'Groups' as const, id })),
+            { type: 'Groups', id: 'LIST' },
+          ]
           : [{ type: 'Groups', id: 'LIST' }],
     }),
     addToGroup: builder.mutation<
@@ -79,6 +80,22 @@ export const groupsApi = api.injectEndpoints({
         },
       }),
     }),
+    editGroup: builder.mutation<GroupResponse, Partial<GroupCreateBody> & { gid: number }>({
+      query: (body) => ({
+        url: `groups/${body.gid}`,
+        method: "PATCH",
+        body: omit(body, 'gid')
+      }),
+      invalidatesTags: (_, __, { gid }) => [{ type: 'Groups', id: gid }],
+    }),
+    deleteGroup: builder.mutation<{ success: boolean }, { id: number }>({
+      query: body => ({
+        url: `groups/${body.id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [{ type: 'Groups', id: 'LIST' }],
+
+    })
   }),
 })
 
@@ -91,4 +108,6 @@ export const {
   useGetGroupsQuery,
   useAddToGroupMutation,
   useRemoveUserFromGroupsMutation,
+  useEditGroupMutation,
+  useDeleteGroupMutation
 } = groupsApi
