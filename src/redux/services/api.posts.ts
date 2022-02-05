@@ -1,4 +1,4 @@
-import { EditPostData, PostBody, PostResponse } from './../../types/index'
+import { DeletePostData, EditPostData, PostBody, PostResponse } from './../../types/index'
 import { api } from './api'
 
 export const PostsApi = api.injectEndpoints({
@@ -58,6 +58,14 @@ export const PostsApi = api.injectEndpoints({
       }),
       invalidatesTags: [{ type: 'Posts', id: "LIST" }],
     }),
+    deletePost: builder.mutation<{ success: boolean }, DeletePostData>({
+      query: (body) => ({
+        url: `posts/${body.id}`,
+        method: "DELETE",
+        body
+      }),
+      invalidatesTags: [{ type: 'Posts', id: "LIST" }],
+    })
   }),
 })
 
@@ -67,5 +75,6 @@ export const {
   useGetPostQuery,
   useLazyGetPostsForQuery,
   useAddPostMutation,
-  useUpdatePostMutation
+  useUpdatePostMutation,
+  useDeletePostMutation
 } = PostsApi

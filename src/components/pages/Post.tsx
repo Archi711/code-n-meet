@@ -8,66 +8,94 @@ import {
   Spinner,
   Stack,
   Text,
+  useToast,
 } from '@chakra-ui/react'
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
+import { useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useAppSelector } from '../../app/hooks'
 import useApiError from '../../hooks/useApiError'
-import { useGetPostQuery } from '../../redux/services/api.posts'
+import { useDeletePostMutation, useGetPostQuery } from '../../redux/services/api.posts'
 import AppLink from '../custom/AppLink'
 import NotFound from './NotFound'
 
 export default function Post() {
   const params = useParams()
   const postId = params.postId
-  const { data, isLoading, error } = useGetPostQuery(Number(postId), {
+  const groupId = params.id
+  const toast = useToast()
+  const navigate = useNavigate()
+  const { data: postData, isLoading: postIsLoading, error: postError } = useGetPostQuery(Number(postId), {
     skip: !isFinite(Number(postId)),
   })
-  useApiError(error, {})
-  const user = useAppSelector(state => state.auth.user)
-  const editable = !!user && !!data && (user.id === data.User.id || user.id === data.Group.User.id)
+  const [trigger, { data: deleteData, isLoading: deleteIsLoading, error: deleteError }] = useDeletePostMutation()
 
-  if (!postId) return <NotFound />
-  if (isLoading)
+  useApiError(deleteError, {})
+  useApiError(postError, {})
+  const user = useAppSelector(state => state.auth.user)
+  const editable = !!user && !!postData && (user.id === postData.User.id || user.id === postData.Group.User.id)
+
+  useEffect(() => {
+    if (deleteData) {
+      navigate(`/groups/${groupId}`)
+      toast({
+        title: "Success",
+        description: "Post deleted",
+        status: "success"
+      })
+    }
+  }, [deleteData])
+
+
+  if (!postId || !groupId) return <NotFound />
+  if (postIsLoading)
     return (
       <Center>
         <Spinner />
       </Center>
     )
-  if (data)
+  if (postData)
     return (
       <Stack>
-        <Heading>{data.title}</Heading>
+        <Heading>{postData.title}</Heading>
         <Divider />
         <HStack as='header'>
           <Text>
             Author:{' '}
-            <AppLink color='yellow.100' to={`/profile/${data.User.id}`}>
-              {data.User.name || data.User.id}
+            <AppLink color='yellow.100' to={`/profile/${postData.User.id}`}>
+              {postData.User.name || postData.User.id}
             </AppLink>
           </Text>
           <Text>
             Group:{' '}
-            <AppLink color='blue.200' to={`/groups/${data.Group.id}`}>
-              {data.Group.name}
+            <AppLink color='blue.200' to={`/groups/${postData.Group.id}`}>
+              {postData.Group.name}
             </AppLink>
           </Text>
           <Spacer />
           {
-            editable ?
-              <AppLink to={`post-creator`} state={{
-                title: data.title,
-                content: data.content,
-              }}>
-                <Button colorScheme={'blue'}>Edit post</Button>
-              </AppLink>
+            editable && user ? (
+              <>
+                <Button colorScheme={'red'} isLoading={deleteIsLoading} onClick={() => trigger({
+                  id: Number(postId),
+                  idGroup: Number(groupId),
+                  idUser: user.id
+                })}>delete post</Button>
+                <AppLink to={`post-creator`} state={{
+                  title: postData.title,
+                  content: postData.content,
+                }}>
+                  <Button colorScheme={'blue'}>Edit post</Button>
+                </AppLink>
+              </>
+            )
               : null
           }
         </HStack>
         <Divider />
         <ReactMarkdown components={ChakraUIRenderer()}>
-          {data.content}
+          {postData.content}
         </ReactMarkdown>
       </Stack>
     )

@@ -101,6 +101,13 @@ export type EditPostData = {
   id: number
 }
 
+
+export type DeletePostData = {
+  idGroup: number
+  idUser: number
+  id: number
+}
+
 export type EditGroupData = Partial<GroupCreateBody>
 
 export type GHProfileResponse = {
