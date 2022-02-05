@@ -1,4 +1,4 @@
-import { Stack, Divider, Spinner, Center, Button, Text } from '@chakra-ui/react'
+import { Stack, Divider, Spinner, Center, Button, Text, HStack, Spacer } from '@chakra-ui/react'
 import { useEffect } from 'react'
 import useApiError from '../../../hooks/useApiError'
 import { useLazyGetUserGroupsQuery } from '../../../redux/services/api.groups'
@@ -32,7 +32,16 @@ export default function Groups({ isOwn, userId }: GroupsProps) {
   return (
     <Stack>
       <Stack>
-        <Text fontSize={'2xl'}>{isOwn ? 'Your groups:' : 'Groups:'} </Text>
+        <HStack>
+
+          <Text fontSize={'2xl'}>{isOwn ? 'Your groups:' : 'Groups:'} </Text>
+          <Spacer />
+          {isOwn ? (
+            <AppLink to='/group-creator'>
+              <Button variant={'outline'}>create group!</Button>
+            </AppLink>
+          ) : null}
+        </HStack>
         <Divider />
       </Stack>
       {UGisLoading ? (
@@ -47,11 +56,7 @@ export default function Groups({ isOwn, userId }: GroupsProps) {
       ) : (
         <Center gap={4} flexDirection={'column'}>
           <Text fontSize='2xl'>No groups found</Text>
-          {isOwn ? (
-            <AppLink to='/group-creator'>
-              <Button variant={'outline'}>create group!</Button>
-            </AppLink>
-          ) : null}
+
         </Center>
       )}
     </Stack>
