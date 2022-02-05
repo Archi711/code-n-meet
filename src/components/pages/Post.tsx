@@ -1,8 +1,10 @@
 import {
+  Button,
   Center,
   Divider,
   Heading,
   HStack,
+  Spacer,
   Spinner,
   Stack,
   Text,
@@ -10,6 +12,7 @@ import {
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
 import ReactMarkdown from 'react-markdown'
 import { useParams } from 'react-router-dom'
+import { useAppSelector } from '../../app/hooks'
 import useApiError from '../../hooks/useApiError'
 import { useGetPostQuery } from '../../redux/services/api.posts'
 import AppLink from '../custom/AppLink'
@@ -22,6 +25,9 @@ export default function Post() {
     skip: !isFinite(Number(postId)),
   })
   useApiError(error, {})
+  const user = useAppSelector(state => state.auth.user)
+  const editable = !!user && !!data && (user.id === data.User.id || user.id === data.Group.User.id)
+
   if (!postId) return <NotFound />
   if (isLoading)
     return (
@@ -47,6 +53,17 @@ export default function Post() {
               {data.Group.name}
             </AppLink>
           </Text>
+          <Spacer />
+          {
+            editable ?
+              <AppLink to={`post-creator`} state={{
+                title: data.title,
+                content: data.content,
+              }}>
+                <Button colorScheme={'blue'}>Edit post</Button>
+              </AppLink>
+              : null
+          }
         </HStack>
         <Divider />
         <ReactMarkdown components={ChakraUIRenderer()}>

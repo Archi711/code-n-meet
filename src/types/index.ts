@@ -46,6 +46,9 @@ export type PostResponse = {
   Group: {
     id: number
     name: string
+    User: {
+      id: number
+    }
   }
   User: {
     id: number
@@ -89,6 +92,16 @@ export type DeleteProfileBody = {
   password: string
   id: number
 }
+
+export type EditPostData = {
+  title?: string
+  content?: string
+  idGroup: number
+  idUser: number
+  id: number
+}
+
+export type EditGroupData = Partial<GroupCreateBody>
 
 export type GHProfileResponse = {
   login: string

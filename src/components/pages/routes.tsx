@@ -27,6 +27,7 @@ export default function AppRoutes() {
       <Route path='/profile/:id' element={<Profile />} />
       <Route path='/profile/:id/settings' element={<ProfileSettings />} />
       <Route path='/groups/:id/post-creator' element={<PostCreator />} />
+      <Route path='/groups/:id/posts/:postId/post-creator' element={<PostCreator />} />
       <Route path='/groups/:id/posts/:postId' element={<Post />} />
       <Route path='/groups' element={<Groups />} />
       <Route path='/groups/:id' element={<Group />} />

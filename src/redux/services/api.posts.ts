@@ -1,4 +1,4 @@
-import { PostBody, PostResponse } from './../../types/index'
+import { EditPostData, PostBody, PostResponse } from './../../types/index'
 import { api } from './api'
 
 export const PostsApi = api.injectEndpoints({
@@ -13,9 +13,9 @@ export const PostsApi = api.injectEndpoints({
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }) => ({ type: 'Posts' as const, id })),
-              { type: 'Posts', id: 'LIST' },
-            ]
+            ...result.map(({ id }) => ({ type: 'Posts' as const, id })),
+            { type: 'Posts', id: 'LIST' },
+          ]
           : [{ type: 'Posts', id: 'LIST' }],
     }),
     getPosts: builder.query<PostResponse[], undefined>({
@@ -25,9 +25,9 @@ export const PostsApi = api.injectEndpoints({
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }) => ({ type: 'Posts' as const, id })),
-              { type: 'Posts', id: 'LIST' },
-            ]
+            ...result.map(({ id }) => ({ type: 'Posts' as const, id })),
+            { type: 'Posts', id: 'LIST' },
+          ]
           : [{ type: 'Posts', id: 'LIST' }],
     }),
     getPost: builder.query<PostResponse, number>({
@@ -37,9 +37,9 @@ export const PostsApi = api.injectEndpoints({
       providesTags: (result) =>
         result
           ? [
-              { type: 'Posts' as const, id: result.id },
-              { type: 'Posts', id: 'LIST' },
-            ]
+            { type: 'Posts' as const, id: result.id },
+            { type: 'Posts', id: 'LIST' },
+          ]
           : [{ type: 'Posts', id: 'LIST' }],
     }),
     addPost: builder.mutation<{ id: number }, PostBody>({
@@ -50,6 +50,14 @@ export const PostsApi = api.injectEndpoints({
       }),
       invalidatesTags: [{ type: 'Posts', id: 'LIST' }],
     }),
+    updatePost: builder.mutation<PostResponse, EditPostData>({
+      query: (body) => ({
+        url: `posts/${body.id}`,
+        method: "PATCH",
+        body
+      }),
+      invalidatesTags: [{ type: 'Posts', id: "LIST" }],
+    }),
   }),
 })
 
@@ -59,4 +67,5 @@ export const {
   useGetPostQuery,
   useLazyGetPostsForQuery,
   useAddPostMutation,
+  useUpdatePostMutation
 } = PostsApi

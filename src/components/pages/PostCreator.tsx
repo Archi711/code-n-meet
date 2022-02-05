@@ -18,9 +18,10 @@ import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
 import { Form, Formik, FormikHelpers } from 'formik'
 import { useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useLocation } from 'react-router-dom'
+import { useAppSelector } from '../../app/hooks'
 import useApiError from '../../hooks/useApiError'
-import { useAddPostMutation } from '../../redux/services/api.posts'
+import { useAddPostMutation, useUpdatePostMutation } from '../../redux/services/api.posts'
 import { PostBody } from '../../types'
 import { CreatePostValidation } from '../../validations'
 import AppFormField from '../custom/AppFormField'
@@ -29,27 +30,43 @@ import NotFound from './NotFound'
 export default function PostCreator() {
   const params = useParams()
   const navigate = useNavigate()
-  const [trigger, { data, isLoading, error }] = useAddPostMutation()
-  useApiError(error, {})
+  const location = useLocation()
+  const user = useAppSelector(state => state.auth.user)
+  const updateData = location.state as PostBody | undefined
+  const [triggerAP, { data: APdata, isLoading: APisLoading, error: APerror }] = useAddPostMutation()
+  const [triggerUP, { data: UPdata, isLoading: UPisLoading, error: UPerror }] = useUpdatePostMutation()
+  useApiError(APerror, {})
+  useApiError(UPerror, {})
 
   useEffect(() => {
-    if (data) {
-      navigate(`/groups/${params.id}/posts/${data.id}`)
+    if (APdata || UPdata) {
+      const postId = APdata?.id || UPdata?.id
+      navigate(`/groups/${params.id}/posts/${postId}`
+      )
     }
-  }, [data])
-  if (!params.id) return <NotFound />
-  const handleSubmit = (values: PostBody, helpers: FormikHelpers<PostBody>) => {
-    trigger(values)
+  }, [APdata, UPdata])
+  if (!params.id || (!params.postId && updateData) || !user) return <NotFound />
+  const handleSubmit = async (values: PostBody, helpers: FormikHelpers<PostBody>) => {
+    if (!updateData) {
+      await triggerAP(values)
+    }
+    else {
+      await triggerUP({
+        ...values,
+        id: Number(params.postId),
+        idUser: user.id
+      })
+    }
     helpers.setSubmitting(false)
   }
   return (
     <Stack>
-      <Heading>Create post</Heading>
+      <Heading>{updateData ? 'Update' : "Create"} post</Heading>
       <Formik<PostBody>
         initialValues={{
-          content: '',
+          content: updateData?.content || '',
           idGroup: Number(params.id),
-          title: '',
+          title: updateData?.title || '',
         }}
         onSubmit={handleSubmit}
         validationSchema={CreatePostValidation}
@@ -80,11 +97,11 @@ export default function PostCreator() {
                       />
                       <HStack>
                         <Button
-                          isLoading={isLoading}
+                          isLoading={APisLoading || UPisLoading}
                           type='submit'
                           colorScheme={'green'}
                         >
-                          add post
+                          {updateData ? 'update' : 'add'} post
                         </Button>
                       </HStack>
                     </Stack>
