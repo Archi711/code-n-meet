@@ -1,16 +1,24 @@
-import { Container } from '@chakra-ui/react'
-import React from 'react'
+import { Container, Flex, Spacer } from '@chakra-ui/react'
 import { BrowserRouter } from 'react-router-dom'
+import AppHelmet from './components/common/Helmet'
 import AppHeader from './components/general/Header'
+import AppFooter from './components/general/Footer'
 import AppRoutes from './components/pages/routes'
 
 function App() {
-  return <Container maxW='container.lg'>
+  return (
     <BrowserRouter>
-      <AppHeader />
-      <AppRoutes />
+      <AppHelmet />
+      <Container maxW='container.xl'>
+        <Flex direction='column' minH='100vh'>
+          <AppHeader />
+          <AppRoutes />
+          <Spacer />
+          <AppFooter />
+        </Flex>
+      </Container>
     </BrowserRouter>
-  </Container>
+  )
 }
 
 export default App
